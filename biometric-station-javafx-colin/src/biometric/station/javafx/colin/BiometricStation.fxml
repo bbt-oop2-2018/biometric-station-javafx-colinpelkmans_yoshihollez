@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="366.0" prefWidth="1014.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="biometric.station.javafx.colin.FXMLDocumentController">
+   <children>
+      <LineChart layoutX="43.0" layoutY="81.0" prefHeight="239.0" prefWidth="314.0" AnchorPane.bottomAnchor="45.80000000000001" AnchorPane.topAnchor="81.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <LineChart layoutX="353.0" layoutY="81.0" prefHeight="239.0" prefWidth="314.0" AnchorPane.bottomAnchor="45.80000000000001" AnchorPane.topAnchor="81.0">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </LineChart>
+      <LineChart layoutX="666.0" layoutY="81.0" prefHeight="239.0" prefWidth="314.0" AnchorPane.bottomAnchor="45.80000000000001" AnchorPane.leftAnchor="666.0" AnchorPane.rightAnchor="33.60000000000002" AnchorPane.topAnchor="81.0">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </LineChart>
+      <Label layoutX="174.0" layoutY="54.0" text="Heartbeat" />
+      <Label layoutX="471.0" layoutY="54.0" text="Accelorometer" />
+      <Label layoutX="789.0" layoutY="54.0" text="Temperature" />
+   </children>
+</AnchorPane>
