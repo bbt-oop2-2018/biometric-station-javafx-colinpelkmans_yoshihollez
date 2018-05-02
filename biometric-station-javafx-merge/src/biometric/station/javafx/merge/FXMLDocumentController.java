@@ -60,15 +60,20 @@ public class FXMLDocumentController implements Initializable {
         double randomHeartbeat = dataGenerator.nextDouble()
         * (MAXIMUM_HEART - MINIMUM_HEART + 1) + MINIMUM_HEART;
         System.out.println(randomHeartbeat);
-        heartbeatValues.getData().add(new XYChart.Data(xAxisHeart, randomHeartbeat));
+        heartbeatValues.getData().add(new XYChart.Data(xValueHeart, randomHeartbeat));
+        xValueHeart++;
         
         double randomAccelerometer = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
-        accelorometerValues.getData().add(new XYChart.Data(xAxisAccel, randomAccelerometer));
+        System.out.println(randomAccelerometer);
+        accelorometerValues.getData().add(new XYChart.Data(xValueAccel, randomAccelerometer));
+        xValueAccel++;
         
         double randomTemperature = dataGenerator.nextDouble()
         * (MAXIMUM_TEMPERATURE - MINIMUM_TEMPERATURE + 1) + MINIMUM_TEMPERATURE;
-        temperatureValues.getData().add(new XYChart.Data(xAxisTemp, randomTemperature));
+        System.out.println(randomTemperature);
+        temperatureValues.getData().add(new XYChart.Data(xValueTemp, randomTemperature));
+        xValueTemp++;
     }
     
     @Override
