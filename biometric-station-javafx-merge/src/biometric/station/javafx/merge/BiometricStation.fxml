@@ -35,6 +35,6 @@
       <Label layoutX="96.0" layoutY="63.0" text="Heartbeat" />
       <Label layoutX="96.0" layoutY="363.0" text="Accelorometer" />
       <Label layoutX="101.0" layoutY="640.0" text="Temperature" />
-      <Button fx:id="generateData" layoutX="486.0" layoutY="898.0" mnemonicParsing="false" onAction="#generateRandomDataHandler" text="Data" AnchorPane.bottomAnchor="1.3999999999999773" AnchorPane.leftAnchor="486.0" AnchorPane.rightAnchor="487.20000000000005" />
+      <Button fx:id="generateData" layoutX="433.0" layoutY="897.0" mnemonicParsing="false" onAction="#generateRandomDataHandler" prefHeight="26.0" prefWidth="129.0" text="Test Data" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="433.0" AnchorPane.rightAnchor="341.0" />
    </children>
 </AnchorPane>

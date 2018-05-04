@@ -20,7 +20,7 @@ import javafx.scene.control.Button;
  *
  * @author colin
  */
-public class FXMLDocumentController implements Initializable {
+public class FXMLDocumentController implements Initializable, IMqttMessageHandler {
     
     @FXML private LineChart heartbeatSensorChart;
     @FXML private LineChart accelorometerChart;
@@ -29,7 +29,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML private Button generateData;
     
     private XYChart.Series heartbeatValues;
-    private XYChart.Series accelorometerValues;
+    private XYChart.Series accelorometerValuesX;
+    private XYChart.Series accelorometerValuesY;
+    private XYChart.Series accelorometerValuesZ;
     private XYChart.Series temperatureValues;
     
     final NumberAxis xAxisHeart = new NumberAxis();
@@ -54,37 +56,54 @@ public class FXMLDocumentController implements Initializable {
     private int xValueAccel = 0;
     private int xValueTemp = 0;
     
+    MqttBroker heartbeat;
+    MqttBroker accelerometer;
+    MqttBroker temperature;
+    
      @FXML
      private void generateRandomDataHandler(ActionEvent event) {
         
         double randomHeartbeat = dataGenerator.nextDouble()
         * (MAXIMUM_HEART - MINIMUM_HEART + 1) + MINIMUM_HEART;
-        System.out.println(randomHeartbeat);
         heartbeatValues.getData().add(new XYChart.Data(xValueHeart, randomHeartbeat));
         xValueHeart++;
         
-        double randomAccelerometer = dataGenerator.nextDouble()
+        double randomAccelerometerX = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
-        System.out.println(randomAccelerometer);
-        accelorometerValues.getData().add(new XYChart.Data(xValueAccel, randomAccelerometer));
+        accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerX));
+        
+        double randomAccelerometerY = dataGenerator.nextDouble()
+        * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
+        accelorometerValuesY.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerY));
+        
+        double randomAccelerometerZ = dataGenerator.nextDouble()
+        * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
+        accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerZ));
         xValueAccel++;
         
         double randomTemperature = dataGenerator.nextDouble()
         * (MAXIMUM_TEMPERATURE - MINIMUM_TEMPERATURE + 1) + MINIMUM_TEMPERATURE;
-        System.out.println(randomTemperature);
         temperatureValues.getData().add(new XYChart.Data(xValueTemp, randomTemperature));
         xValueTemp++;
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         heartbeatValues = new XYChart.Series();
         heartbeatValues.setName("heartbeat in BPM");
         heartbeatSensorChart.getData().add(heartbeatValues);
         
-        accelorometerValues = new XYChart.Series();
-        accelorometerValues.setName("speed is m/s");
-        accelorometerChart.getData().add(accelorometerValues);
+        accelorometerValuesX = new XYChart.Series();
+        accelorometerValuesX.setName("X");
+        accelorometerChart.getData().add(accelorometerValuesX);
+        
+        accelorometerValuesY = new XYChart.Series();
+        accelorometerValuesY.setName("Y");
+        accelorometerChart.getData().add(accelorometerValuesY);
+        
+        accelorometerValuesZ = new XYChart.Series();
+        accelorometerValuesZ.setName("Z");
+        accelorometerChart.getData().add(accelorometerValuesZ);
         
         temperatureValues = new XYChart.Series();
         temperatureValues.setName("temperature in °C");
@@ -99,6 +118,30 @@ public class FXMLDocumentController implements Initializable {
        
        temperatureChart.getYAxis().setLabel("Temperature");
        temperatureChart.getXAxis().setLabel("Measurement");
+       
+       heartbeat = new MqttBroker("colin1", "heartbeat");
+       heartbeat.setMessageHandler(this);
+       
+       accelerometer = new MqttBroker("colin2","accelerometer");
+       accelerometer.setMessageHandler(this);
+       
+       temperature = new MqttBroker("colin3","temperature");
+       temperature.setMessageHandler(this);
     }    
+
+    @Override
+    public void messageArrived(String topic, String message) {
+//        if (topic.equals("heartbeat")){
+//            double temperature = Double.parseDouble(message);
+//            heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
+//            xValueHeart++;
+//        } else if (topic.equals("accelerometer")){
+//          accelorometerValues.getData().add(new XYChart.Data(xValueAccel, accelerometer)); 
+//          xValueAccel++;
+//        } else if (topic.equals("temperature")){
+//            temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));
+//        xValueTemp++;   
+//        }
+    }
     
 }
