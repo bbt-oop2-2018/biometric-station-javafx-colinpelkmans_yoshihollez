@@ -50,8 +50,7 @@ public class MqttBroker implements MqttCallback {
             System.out.println("cause "+me.getCause());
             System.out.println("excep "+me);
             me.printStackTrace();
-        }
-        
+        }        System.out.println("Connected to " + BASE_TOPIC);
     }
     
     public void sendMessage(String message) {

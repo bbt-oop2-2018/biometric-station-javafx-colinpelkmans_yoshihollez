@@ -15,6 +15,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 /**
  *
@@ -29,7 +30,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     @FXML private Button generateData;
     
     private XYChart.Series heartbeatValues;
-    private XYChart.Series accelorometerValuesX;
+    private XYChart.Series accelorometerValues;
     private XYChart.Series accelorometerValuesY;
     private XYChart.Series accelorometerValuesZ;
     private XYChart.Series temperatureValues;
@@ -70,7 +71,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
         
         double randomAccelerometerX = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
-        accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerX));
+        accelorometerValues.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerX));
         
         double randomAccelerometerY = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
@@ -93,9 +94,9 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
         heartbeatValues.setName("heartbeat in BPM");
         heartbeatSensorChart.getData().add(heartbeatValues);
         
-        accelorometerValuesX = new XYChart.Series();
-        accelorometerValuesX.setName("X");
-        accelorometerChart.getData().add(accelorometerValuesX);
+        accelorometerValues = new XYChart.Series();
+        accelorometerValues.setName("X");
+        accelorometerChart.getData().add(accelorometerValues);
         
         accelorometerValuesY = new XYChart.Series();
         accelorometerValuesY.setName("Y");
@@ -118,30 +119,51 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
        
        temperatureChart.getYAxis().setLabel("Temperature");
        temperatureChart.getXAxis().setLabel("Measurement");
+      
        
+       // Create a chat service and allow this class to receive messages
        heartbeat = new MqttBroker("colin1", "heartbeat");
        heartbeat.setMessageHandler(this);
        
        accelerometer = new MqttBroker("colin2","accelerometer");
        accelerometer.setMessageHandler(this);
-       
-       temperature = new MqttBroker("colin3","temperature");
+ 
+       temperature = new MqttBroker("colin3","Temp");
        temperature.setMessageHandler(this);
     }    
 
     @Override
-    public void messageArrived(String topic, String message) {
-//        if (topic.equals("heartbeat")){
-//            double temperature = Double.parseDouble(message);
-//            heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
-//            xValueHeart++;
-//        } else if (topic.equals("accelerometer")){
-//          accelorometerValues.getData().add(new XYChart.Data(xValueAccel, accelerometer)); 
-//          xValueAccel++;
-//        } else if (topic.equals("temperature")){
-//            temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));
-//        xValueTemp++;   
-//        }
+    public void messageArrived(String message, String topic) {
+        if (topic.equals("HB")){
+            double temperature = Double.parseDouble(message);
+            heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
+            xValueHeart++;
+            System.out.println(heartbeat);
+        } else if (topic.equals("Accel")){
+          accelorometerValues.getData().add(new XYChart.Data(xValueAccel, accelerometer)); 
+          xValueAccel++;
+           System.out.println("accelerometer");
+        } else if (topic.equals("Temp")){
+          temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));
+        xValueTemp++;   
+         System.out.println(temperature);
+        }
     }
     
+//    private void disconnectClientOnClose() {
+//        // Source: https://stackoverflow.com/a/30910015
+//        generateData.sceneProperty().addListener((observableScene, oldScene, newScene) -> {
+//            if (oldScene == null && newScene != null) {
+//               //  scene is set for the first time. Now its the time to listen stage changes.
+//                newScene.windowProperty().addListener((observableWindow, oldWindow, newWindow) -> {
+//                    if (oldWindow == null && newWindow != null) {
+//                       //  stage is set. now is the right time to do whatever we need to the stage in the controller.
+//                        ((Stage) newWindow).setOnCloseRequest((event) -> {
+//                            MqttBroker.disconnect();
+//                        });
+//                    }
+//                });
+//            }
+//        });
+//    }
 }
