@@ -32,6 +32,10 @@ public class MqttBroker implements MqttCallback {
         this.channelTopic = BASE_TOPIC + "/" + this.channelName;
         setupMqtt();
     }
+
+    MqttBroker() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     private void setupMqtt() {
         try {

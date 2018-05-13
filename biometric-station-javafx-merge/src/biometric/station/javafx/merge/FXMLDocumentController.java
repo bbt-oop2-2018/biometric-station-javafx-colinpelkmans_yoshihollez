@@ -57,6 +57,8 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     private int xValueAccel = 0;
     private int xValueTemp = 0;
     
+    private MqttBroker mqttBroker;
+    
     MqttBroker heartbeat;
     MqttBroker accelerometer;
     MqttBroker temperature;
@@ -90,6 +92,9 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+       // mqttBroker = new MqttBroker(); 
+        
         heartbeatValues = new XYChart.Series();
         heartbeatValues.setName("heartbeat in BPM");
         heartbeatSensorChart.getData().add(heartbeatValues);
@@ -130,6 +135,8 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
  
        temperature = new MqttBroker("colin3","Temp");
        temperature.setMessageHandler(this);
+       
+    //   disconnectClientOnClose();
     }    
 
     @Override
@@ -138,7 +145,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
             double temperature = Double.parseDouble(message);
             heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
             xValueHeart++;
-            System.out.println(heartbeat);
+            System.out.println(topic);
         } else if (topic.equals("Accel")){
           accelorometerValues.getData().add(new XYChart.Data(xValueAccel, accelerometer)); 
           xValueAccel++;
@@ -150,20 +157,20 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
         }
     }
     
-//    private void disconnectClientOnClose() {
-//        // Source: https://stackoverflow.com/a/30910015
-//        generateData.sceneProperty().addListener((observableScene, oldScene, newScene) -> {
-//            if (oldScene == null && newScene != null) {
-//               //  scene is set for the first time. Now its the time to listen stage changes.
-//                newScene.windowProperty().addListener((observableWindow, oldWindow, newWindow) -> {
-//                    if (oldWindow == null && newWindow != null) {
-//                       //  stage is set. now is the right time to do whatever we need to the stage in the controller.
-//                        ((Stage) newWindow).setOnCloseRequest((event) -> {
-//                            MqttBroker.disconnect();
-//                        });
-//                    }
-//                });
-//            }
-//        });
-//    }
+    private void disconnectClientOnClose() {
+        // Source: https://stackoverflow.com/a/30910015
+        generateData.sceneProperty().addListener((observableScene, oldScene, newScene) -> {
+            if (oldScene == null && newScene != null) {
+               //  scene is set for the first time. Now its the time to listen stage changes.
+                newScene.windowProperty().addListener((observableWindow, oldWindow, newWindow) -> {
+                    if (oldWindow == null && newWindow != null) {
+                       //  stage is set. now is the right time to do whatever we need to the stage in the controller.
+                        ((Stage) newWindow).setOnCloseRequest((event) -> {
+                            mqttBroker.disconnect();
+                        });
+                    }
+                });
+            }
+        });
+    }
 }
