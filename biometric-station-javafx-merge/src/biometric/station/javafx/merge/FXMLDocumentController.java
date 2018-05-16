@@ -93,7 +93,8 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-       // mqttBroker = new MqttBroker(); 
+       mqttBroker = new MqttBroker(); 
+       mqttBroker.setMessageHandler(this);
         
         heartbeatValues = new XYChart.Series();
         heartbeatValues.setName("heartbeat in BPM");
@@ -136,7 +137,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
        temperature = new MqttBroker("colin3","Temp");
        temperature.setMessageHandler(this);
        
-    //   disconnectClientOnClose();
+       disconnectClientOnClose();
     }    
 
     @Override
