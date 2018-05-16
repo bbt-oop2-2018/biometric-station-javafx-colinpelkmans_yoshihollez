@@ -57,13 +57,11 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     private int xValueAccel = 0;
     private int xValueTemp = 0;
     
-//    private MqttBroker mqttBroker;
-    
-    MqttBroker heartbeat;
-    MqttBroker accelerometerX;
-    MqttBroker accelerometerY;
-    MqttBroker accelerometerZ;
-    MqttBroker temperature;
+    private MqttBroker heartbeat;
+    private MqttBroker accelerometerX;
+    private MqttBroker accelerometerY;
+    private MqttBroker accelerometerZ;
+    private MqttBroker temperature;
     
      @FXML
      private void generateRandomDataHandler(ActionEvent event) {
@@ -94,9 +92,6 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-//        mqttBroker = new MqttBroker(); 
-//        mqttBroker.setMessageHandler(this);
         
         heartbeatValues = new XYChart.Series();
         heartbeatValues.setName("heartbeat in BPM");
@@ -153,19 +148,15 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
         if (topic.equals("HB")){
                 double heartbeat = Double.parseDouble(message);
                  heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
-                 
-                 heartbeatSensorChart.getData().add(heartbeatValues);
 
                 xValueHeart++;
 
                 System.out.println("HB: " + heartbeat);
                
-               } else if (topic.equals("AccelX")){
+               } else if (topic.equals("AccelX" )){
 
                 double accelerometerX = Double.parseDouble(message);
-                 accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, accelerometerX)); 
-
-               accelorometerChart.getData().add(accelorometerValuesX);
+                accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, accelerometerX)); 
 
                 xValueAccel++;
 
@@ -175,7 +166,6 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
 
                 double accelerometerY = Double.parseDouble(message);
                 accelorometerValuesY.getData().add(new XYChart.Data(xValueAccel, accelerometerY)); 
-                accelorometerChart.getData().add(accelorometerValuesY);
 
                 xValueAccel++;
 
@@ -184,9 +174,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
                } else if (topic.equals("AccelZ")){
 
                 double accelerometerZ = Double.parseDouble(message);
-                 accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccel, accelerometerZ)); 
-
-               accelorometerChart.getData().add(accelorometerValuesZ);
+                accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccel, accelerometerZ)); 
 
                 xValueAccel++;
 

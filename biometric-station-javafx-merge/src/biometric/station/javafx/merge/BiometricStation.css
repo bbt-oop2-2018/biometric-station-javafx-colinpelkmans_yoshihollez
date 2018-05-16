@@ -1,0 +1,33 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 16-mei-2018, 17:19:06
+    Author     : ColinP
+*/
+.background {
+    -fx-background-color: #808080;
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 10px;
+}
+
+.chartText{
+    -fx-color: white;
+}
+
+.chartDisplay{
+    -fx-border-style: dashed;
+    -fx-border-color: black;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+}
+
+.Label {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+    -fx-opacity: 0.6;
+}

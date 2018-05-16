@@ -6,9 +6,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="925.0" prefWidth="903.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="biometric.station.javafx.merge.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="925.0" prefWidth="903.0" styleClass="background" stylesheets="@BiometricStation.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="biometric.station.javafx.merge.FXMLDocumentController">
    <children>
-      <LineChart fx:id="heartbeatSensorChart" layoutX="43.0" layoutY="81.0" prefHeight="239.0" prefWidth="314.0" AnchorPane.bottomAnchor="604.8" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="81.0">
+      <LineChart fx:id="heartbeatSensorChart" layoutX="43.0" layoutY="54.0" prefHeight="239.0" prefWidth="793.0" styleClass="chartDisplay" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="67.0" AnchorPane.topAnchor="54.0">
         <xAxis>
           <NumberAxis side="BOTTOM" />
         </xAxis>
@@ -16,7 +16,7 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </LineChart>
-      <LineChart fx:id="accelorometerChart" layoutX="43.0" layoutY="381.0" prefHeight="239.0" prefWidth="314.0" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="200.0">
+      <LineChart fx:id="accelorometerChart" layoutX="43.0" layoutY="365.0" prefHeight="239.0" prefWidth="793.0" styleClass="chartDisplay" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="67.0">
          <xAxis>
             <NumberAxis side="BOTTOM" />
          </xAxis>
@@ -24,7 +24,7 @@
             <NumberAxis side="LEFT" />
          </yAxis>
       </LineChart>
-      <LineChart fx:id="temperatureChart" layoutX="43.0" layoutY="658.0" prefHeight="239.0" prefWidth="314.0" AnchorPane.bottomAnchor="27.799999999999955" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="200.0">
+      <LineChart fx:id="temperatureChart" layoutX="43.0" layoutY="633.0" prefHeight="239.0" prefWidth="793.0" styleClass="chartDisplay" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="67.0">
          <xAxis>
             <NumberAxis side="BOTTOM" />
          </xAxis>
@@ -32,9 +32,9 @@
             <NumberAxis side="LEFT" />
          </yAxis>
       </LineChart>
-      <Label layoutX="96.0" layoutY="63.0" text="Heartbeat" />
-      <Label layoutX="96.0" layoutY="363.0" text="Accelorometer" />
-      <Label layoutX="101.0" layoutY="640.0" text="Temperature" />
-      <Button fx:id="generateData" layoutX="433.0" layoutY="897.0" mnemonicParsing="false" onAction="#generateRandomDataHandler" prefHeight="26.0" prefWidth="129.0" text="Test Data" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="433.0" AnchorPane.rightAnchor="341.0" />
+      <Label layoutX="84.0" layoutY="37.0" styleClass="Label" text="Heartbeat" />
+      <Label layoutX="84.0" layoutY="337.0" styleClass="Label" text="Accelorometer" />
+      <Label layoutX="84.0" layoutY="616.0" styleClass="Label" text="Temperature" AnchorPane.bottomAnchor="292.0" />
+      <Button fx:id="generateData" layoutX="387.0" layoutY="884.0" mnemonicParsing="false" onAction="#generateRandomDataHandler" prefHeight="26.0" prefWidth="129.0" text="Test Data" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="387.0" AnchorPane.rightAnchor="387.0" />
    </children>
 </AnchorPane>
