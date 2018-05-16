@@ -30,7 +30,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     @FXML private Button generateData;
     
     private XYChart.Series heartbeatValues;
-    private XYChart.Series accelorometerValues;
+    private XYChart.Series accelorometerValuesX;
     private XYChart.Series accelorometerValuesY;
     private XYChart.Series accelorometerValuesZ;
     private XYChart.Series temperatureValues;
@@ -60,7 +60,9 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     private MqttBroker mqttBroker;
     
     MqttBroker heartbeat;
-    MqttBroker accelerometer;
+    MqttBroker accelerometerX;
+    MqttBroker accelerometerY;
+    MqttBroker accelerometerZ;
     MqttBroker temperature;
     
      @FXML
@@ -73,7 +75,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
         
         double randomAccelerometerX = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
-        accelorometerValues.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerX));
+        accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerX));
         
         double randomAccelerometerY = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
@@ -93,16 +95,16 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-       mqttBroker = new MqttBroker(); 
-       mqttBroker.setMessageHandler(this);
+        mqttBroker = new MqttBroker(); 
+        mqttBroker.setMessageHandler(this);
         
         heartbeatValues = new XYChart.Series();
         heartbeatValues.setName("heartbeat in BPM");
         heartbeatSensorChart.getData().add(heartbeatValues);
         
-        accelorometerValues = new XYChart.Series();
-        accelorometerValues.setName("X");
-        accelorometerChart.getData().add(accelorometerValues);
+        accelorometerValuesX = new XYChart.Series();
+        accelorometerValuesX.setName("X");
+        accelorometerChart.getData().add(accelorometerValuesX);
         
         accelorometerValuesY = new XYChart.Series();
         accelorometerValuesY.setName("Y");
@@ -131,8 +133,14 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
        heartbeat = new MqttBroker("colin1", "heartbeat");
        heartbeat.setMessageHandler(this);
        
-       accelerometer = new MqttBroker("colin2","accelerometer");
-       accelerometer.setMessageHandler(this);
+       accelerometerX = new MqttBroker("colin2","accelerometerX");
+       accelerometerX.setMessageHandler(this);
+       
+       accelerometerY = new MqttBroker("colin2","accelerometerY");
+       accelerometerY.setMessageHandler(this);
+       
+       accelerometerZ = new MqttBroker("colin2","accelerometerZ");
+       accelerometerZ.setMessageHandler(this);
  
        temperature = new MqttBroker("colin3","Temp");
        temperature.setMessageHandler(this);
@@ -143,18 +151,45 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     @Override
     public void messageArrived(String message, String topic) {
         if (topic.equals("HB")){
-            double temperature = Double.parseDouble(message);
+            double heartbeat = Double.parseDouble(message);
             heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
+            
             xValueHeart++;
-            System.out.println(topic);
+            
+            System.out.println("heartbeat: " + heartbeat);
+            
+            heartbeatSensorChart.getData().add(heartbeat);
+            
         } else if (topic.equals("Accel")){
-          accelorometerValues.getData().add(new XYChart.Data(xValueAccel, accelerometer)); 
-          xValueAccel++;
-           System.out.println("accelerometer");
+            double accelerometerX = Double.parseDouble(message);
+            accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, accelerometerX)); 
+            
+            double accelerometerY = Double.parseDouble(message);
+             accelorometerValuesY.getData().add(new XYChart.Data(xValueAccel, accelerometerY)); 
+             
+            double accelerometerZ = Double.parseDouble(message);
+            accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccel, accelerometerZ)); 
+            
+           accelorometerChart.getData().add(accelerometerX);
+           accelorometerChart.getData().add(accelerometerY);
+           accelorometerChart.getData().add(accelerometerZ);
+            
+            xValueAccel++;
+            
+           System.out.println("accelerometer: " + accelerometerX);
+           System.out.println("accelerometer: " + accelerometerY);
+           System.out.println("accelerometer: " + accelerometerZ);
+
         } else if (topic.equals("Temp")){
+          double temperature = Double.parseDouble(message);
           temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));
-        xValueTemp++;   
-         System.out.println(temperature);
+          
+          temperatureChart.getData().add(temperature);
+          
+          xValueTemp++;   
+          
+          System.out.println("temperature: " + temperature);
+          
         }
     }
     
@@ -167,7 +202,11 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
                     if (oldWindow == null && newWindow != null) {
                        //  stage is set. now is the right time to do whatever we need to the stage in the controller.
                         ((Stage) newWindow).setOnCloseRequest((event) -> {
-                            mqttBroker.disconnect();
+                            heartbeat.disconnect();
+                            accelerometerX.disconnect();
+                            accelerometerY.disconnect();
+                            accelerometerZ.disconnect();
+                            temperature.disconnect();
                         });
                     }
                 });
