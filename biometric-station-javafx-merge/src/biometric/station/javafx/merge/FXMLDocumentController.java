@@ -57,7 +57,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     private int xValueAccel = 0;
     private int xValueTemp = 0;
     
-    private MqttBroker mqttBroker;
+//    private MqttBroker mqttBroker;
     
     MqttBroker heartbeat;
     MqttBroker accelerometerX;
@@ -95,8 +95,8 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        mqttBroker = new MqttBroker(); 
-        mqttBroker.setMessageHandler(this);
+//        mqttBroker = new MqttBroker(); 
+//        mqttBroker.setMessageHandler(this);
         
         heartbeatValues = new XYChart.Series();
         heartbeatValues.setName("heartbeat in BPM");
@@ -130,61 +130,74 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
       
        
        // Create a chat service and allow this class to receive messages
-       heartbeat = new MqttBroker("colin1", "heartbeat");
-       heartbeat.setMessageHandler(this);
+       heartbeat = new MqttBroker("colin1", "HB");
+          heartbeat.setMessageHandler(this);
        
-       accelerometerX = new MqttBroker("colin2","accelerometerX");
-       accelerometerX.setMessageHandler(this);
+       accelerometerX = new MqttBroker("colin2","AccelX");
+         accelerometerX.setMessageHandler(this);
        
-       accelerometerY = new MqttBroker("colin2","accelerometerY");
-       accelerometerY.setMessageHandler(this);
+       accelerometerY = new MqttBroker("colin2","AccelY");
+         accelerometerY.setMessageHandler(this);
        
-       accelerometerZ = new MqttBroker("colin2","accelerometerZ");
-       accelerometerZ.setMessageHandler(this);
+       accelerometerZ = new MqttBroker("colin2","AccelZ");
+         accelerometerZ.setMessageHandler(this);
  
        temperature = new MqttBroker("colin3","Temp");
-       temperature.setMessageHandler(this);
+          temperature.setMessageHandler(this);
        
        disconnectClientOnClose();
     }    
 
     @Override
-    public void messageArrived(String message, String topic) {
+    public void messageArrived(String topic, String message) {
         if (topic.equals("HB")){
-            double heartbeat = Double.parseDouble(message);
-            heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
-            
-            xValueHeart++;
-            
-            System.out.println("heartbeat: " + heartbeat);
-            
-            heartbeatSensorChart.getData().add(heartbeat);
-            
-        } else if (topic.equals("Accel")){
-            double accelerometerX = Double.parseDouble(message);
-            accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, accelerometerX)); 
-            
-            double accelerometerY = Double.parseDouble(message);
-             accelorometerValuesY.getData().add(new XYChart.Data(xValueAccel, accelerometerY)); 
-             
-            double accelerometerZ = Double.parseDouble(message);
-            accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccel, accelerometerZ)); 
-            
-           accelorometerChart.getData().add(accelerometerX);
-           accelorometerChart.getData().add(accelerometerY);
-           accelorometerChart.getData().add(accelerometerZ);
-            
-            xValueAccel++;
-            
-           System.out.println("accelerometer: " + accelerometerX);
-           System.out.println("accelerometer: " + accelerometerY);
-           System.out.println("accelerometer: " + accelerometerZ);
+                double heartbeat = Double.parseDouble(message);
+                 heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
+                 
+                 heartbeatSensorChart.getData().add(heartbeatValues);
+
+                xValueHeart++;
+
+                System.out.println("HB: " + heartbeat);
+               
+               } else if (topic.equals("AccelX")){
+
+                double accelerometerX = Double.parseDouble(message);
+                 accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, accelerometerX)); 
+
+               accelorometerChart.getData().add(accelorometerValuesX);
+
+                xValueAccel++;
+
+               System.out.println("accelerometerX: " + accelerometerX);
+               
+               } else if (topic.equals("AccelY")){
+
+                double accelerometerY = Double.parseDouble(message);
+                accelorometerValuesY.getData().add(new XYChart.Data(xValueAccel, accelerometerY)); 
+                accelorometerChart.getData().add(accelorometerValuesY);
+
+                xValueAccel++;
+
+               System.out.println("accelerometerY: " + accelerometerY);
+               
+               } else if (topic.equals("AccelZ")){
+
+                double accelerometerZ = Double.parseDouble(message);
+                 accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccel, accelerometerZ)); 
+
+               accelorometerChart.getData().add(accelorometerValuesZ);
+
+                xValueAccel++;
+
+               System.out.println("accelerometerZ: " + accelerometerZ);
+               
 
         } else if (topic.equals("Temp")){
           double temperature = Double.parseDouble(message);
-          temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));
+             temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));
           
-          temperatureChart.getData().add(temperature);
+          temperatureChart.getData().add(temperatureValues);
           
           xValueTemp++;   
           

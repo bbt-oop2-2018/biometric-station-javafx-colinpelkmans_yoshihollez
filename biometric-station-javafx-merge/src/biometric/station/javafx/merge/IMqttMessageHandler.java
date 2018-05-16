@@ -10,5 +10,5 @@ package biometric.station.javafx.merge;
  * @author ColinP
  */
 public interface IMqttMessageHandler {
-    public void messageArrived(String message, String topic);
+    public void messageArrived(String topic, String message);
 }
