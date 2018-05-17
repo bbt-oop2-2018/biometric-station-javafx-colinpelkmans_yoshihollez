@@ -54,16 +54,17 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     private final int MINIMUM_TEMPERATURE = 0;
     
     private int xValueHeart = 0;
+    private int xValueAccelX = 0;
+    private int xValueAccelY = 0;
+    private int xValueAccelZ = 0;
     private int xValueAccel = 0;
     private int xValueTemp = 0;
-    
-//    private MqttBroker mqttBroker;
-    
-    MqttBroker heartbeat;
-    MqttBroker accelerometerX;
-    MqttBroker accelerometerY;
-    MqttBroker accelerometerZ;
-    MqttBroker temperature;
+        
+    private MqttBroker heartbeat;
+    private MqttBroker accelerometerX;
+    private MqttBroker accelerometerY;
+    private MqttBroker accelerometerZ;
+    private MqttBroker temperature;
     
      @FXML
      private void generateRandomDataHandler(ActionEvent event) {
@@ -75,15 +76,15 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
         
         double randomAccelerometerX = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
-        accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerX));
+        accelorometerValuesX.getData().add(new XYChart.Data(xValueAccelX, randomAccelerometerX));
         
         double randomAccelerometerY = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
-        accelorometerValuesY.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerY));
+        accelorometerValuesY.getData().add(new XYChart.Data(xValueAccelY, randomAccelerometerY));
         
         double randomAccelerometerZ = dataGenerator.nextDouble()
         * (MAXIMUM_ACCEL - MINIMUM_ACCEL + 1) + MINIMUM_ACCEL;
-        accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccel, randomAccelerometerZ));
+        accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccelZ, randomAccelerometerZ));
         xValueAccel++;
         
         double randomTemperature = dataGenerator.nextDouble()
@@ -94,9 +95,6 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-//        mqttBroker = new MqttBroker(); 
-//        mqttBroker.setMessageHandler(this);
         
         heartbeatValues = new XYChart.Series();
         heartbeatValues.setName("heartbeat in BPM");
@@ -154,8 +152,6 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
                 double heartbeat = Double.parseDouble(message);
                  heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
                  
-                 heartbeatSensorChart.getData().add(heartbeatValues);
-
                 xValueHeart++;
 
                 System.out.println("HB: " + heartbeat);
@@ -163,46 +159,30 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
                } else if (topic.equals("AccelX")){
 
                 double accelerometerX = Double.parseDouble(message);
-                 accelorometerValuesX.getData().add(new XYChart.Data(xValueAccel, accelerometerX)); 
-
-               accelorometerChart.getData().add(accelorometerValuesX);
-
-                xValueAccel++;
-
+                 accelorometerValuesX.getData().add(new XYChart.Data(xValueAccelX, accelerometerX)); 
+                xValueAccelX++;
                System.out.println("accelerometerX: " + accelerometerX);
                
                } else if (topic.equals("AccelY")){
 
                 double accelerometerY = Double.parseDouble(message);
-                accelorometerValuesY.getData().add(new XYChart.Data(xValueAccel, accelerometerY)); 
-                accelorometerChart.getData().add(accelorometerValuesY);
-
-                xValueAccel++;
-
+                accelorometerValuesY.getData().add(new XYChart.Data(xValueAccelY, accelerometerY)); 
+                xValueAccelY++;
                System.out.println("accelerometerY: " + accelerometerY);
                
                } else if (topic.equals("AccelZ")){
 
                 double accelerometerZ = Double.parseDouble(message);
-                 accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccel, accelerometerZ)); 
-
-               accelorometerChart.getData().add(accelorometerValuesZ);
-
-                xValueAccel++;
-
+                accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccelZ, accelerometerZ)); 
+                xValueAccelZ++;
                System.out.println("accelerometerZ: " + accelerometerZ);
                
-
         } else if (topic.equals("Temp")){
           double temperature = Double.parseDouble(message);
-             temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));
-          
-          temperatureChart.getData().add(temperatureValues);
-          
+          temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));          
           xValueTemp++;   
           
           System.out.println("temperature: " + temperature);
-          
         }
     }
     
