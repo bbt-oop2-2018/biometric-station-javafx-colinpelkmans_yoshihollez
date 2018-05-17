@@ -59,7 +59,7 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     private int xValueAccelZ = 0;
     private int xValueAccel = 0;
     private int xValueTemp = 0;
-        
+
     private MqttBroker heartbeat;
     private MqttBroker accelerometerX;
     private MqttBroker accelerometerY;
@@ -151,12 +151,11 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
         if (topic.equals("HB")){
                 double heartbeat = Double.parseDouble(message);
                  heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
-                 
                 xValueHeart++;
 
                 System.out.println("HB: " + heartbeat);
                
-               } else if (topic.equals("AccelX")){
+               } else if (topic.equals("AccelX" )){
 
                 double accelerometerX = Double.parseDouble(message);
                  accelorometerValuesX.getData().add(new XYChart.Data(xValueAccelX, accelerometerX)); 
