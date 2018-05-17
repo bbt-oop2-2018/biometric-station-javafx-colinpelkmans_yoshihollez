@@ -8,6 +8,7 @@ package biometric.station.javafx.merge;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -128,19 +129,19 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
       
        
        // Create a chat service and allow this class to receive messages
-       heartbeat = new MqttBroker("colin1", "HB");
+       heartbeat = new MqttBroker("colin", "HB");
           heartbeat.setMessageHandler(this);
        
-       accelerometerX = new MqttBroker("colin2","AccelX");
+       accelerometerX = new MqttBroker("colin","AccelX");
          accelerometerX.setMessageHandler(this);
        
-       accelerometerY = new MqttBroker("colin2","AccelY");
+       accelerometerY = new MqttBroker("colin","AccelY");
          accelerometerY.setMessageHandler(this);
        
-       accelerometerZ = new MqttBroker("colin2","AccelZ");
+       accelerometerZ = new MqttBroker("colin","AccelZ");
          accelerometerZ.setMessageHandler(this);
  
-       temperature = new MqttBroker("colin3","Temp");
+       temperature = new MqttBroker("colin","Temp");
           temperature.setMessageHandler(this);
        
        disconnectClientOnClose();
@@ -150,38 +151,56 @@ public class FXMLDocumentController implements Initializable, IMqttMessageHandle
     public void messageArrived(String topic, String message) {
         if (topic.equals("HB")){
                 double heartbeat = Double.parseDouble(message);
+                Platform.runLater(new Runnable() {
+                @Override public void run() {
                  heartbeatValues.getData().add(new XYChart.Data(xValueHeart, heartbeat));
-                xValueHeart++;
-
+                 xValueHeart++;
+                 }               
+                });              
                 System.out.println("HB: " + heartbeat);
                
                } else if (topic.equals("AccelX" )){
 
                 double accelerometerX = Double.parseDouble(message);
+                 Platform.runLater(new Runnable() {
+                @Override public void run() {
                  accelorometerValuesX.getData().add(new XYChart.Data(xValueAccelX, accelerometerX)); 
-                xValueAccelX++;
+                 xValueAccelX++;
+                  }
+                });
                System.out.println("accelerometerX: " + accelerometerX);
                
                } else if (topic.equals("AccelY")){
 
                 double accelerometerY = Double.parseDouble(message);
+                 Platform.runLater(new Runnable() {
+                @Override public void run() {
                 accelorometerValuesY.getData().add(new XYChart.Data(xValueAccelY, accelerometerY)); 
                 xValueAccelY++;
+                 }
+                }); 
                System.out.println("accelerometerY: " + accelerometerY);
                
                } else if (topic.equals("AccelZ")){
 
                 double accelerometerZ = Double.parseDouble(message);
+                 Platform.runLater(new Runnable() {
+                @Override public void run() {
                 accelorometerValuesZ.getData().add(new XYChart.Data(xValueAccelZ, accelerometerZ)); 
                 xValueAccelZ++;
+                 }
+                });            
                System.out.println("accelerometerZ: " + accelerometerZ);
                
-        } else if (topic.equals("Temp")){
-          double temperature = Double.parseDouble(message);
-          temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));          
-          xValueTemp++;   
-          
-          System.out.println("temperature: " + temperature);
+                } else if (topic.equals("Temp")){
+                 double temperature = Double.parseDouble(message);
+                 Platform.runLater(new Runnable() {
+                 @Override public void run() {
+                temperatureValues.getData().add(new XYChart.Data(xValueTemp, temperature));   
+                xValueTemp++;   
+                  }
+                });
+                System.out.println("temperature: " + temperature);
         }
     }
     
