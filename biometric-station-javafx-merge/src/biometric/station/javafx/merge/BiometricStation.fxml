@@ -6,30 +6,30 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="925.0" prefWidth="903.0" styleClass="background" stylesheets="@BiometricStation.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="biometric.station.javafx.merge.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="925.0" prefWidth="903.0" styleClass="background" stylesheets="@BiometricStation.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="biometric.station.javafx.merge.FXMLDocumentController">
    <children>
       <LineChart fx:id="heartbeatSensorChart" layoutX="43.0" layoutY="54.0" prefHeight="239.0" prefWidth="793.0" styleClass="chartDisplay" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="67.0" AnchorPane.topAnchor="54.0">
         <xAxis>
-          <NumberAxis side="BOTTOM" />
+          <NumberAxis side="BOTTOM" tickLabelFill="WHITE" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis side="LEFT" tickLabelFill="WHITE" />
         </yAxis>
       </LineChart>
       <LineChart fx:id="accelorometerChart" layoutX="43.0" layoutY="365.0" prefHeight="239.0" prefWidth="793.0" styleClass="chartDisplay" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="67.0">
          <xAxis>
-            <NumberAxis side="BOTTOM" />
+            <NumberAxis side="BOTTOM" tickLabelFill="WHITE" />
          </xAxis>
          <yAxis>
-            <NumberAxis side="LEFT" />
+            <NumberAxis side="LEFT" tickLabelFill="WHITE" />
          </yAxis>
       </LineChart>
       <LineChart fx:id="temperatureChart" layoutX="43.0" layoutY="633.0" prefHeight="239.0" prefWidth="793.0" styleClass="chartDisplay" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="67.0">
          <xAxis>
-            <NumberAxis side="BOTTOM" />
+            <NumberAxis side="BOTTOM" tickLabelFill="WHITE" />
          </xAxis>
          <yAxis>
-            <NumberAxis side="LEFT" />
+            <NumberAxis side="LEFT" tickLabelFill="WHITE" />
          </yAxis>
       </LineChart>
       <Label layoutX="84.0" layoutY="37.0" styleClass="Label" text="Heartbeat" />
